@@ -86,8 +86,8 @@ data_path = "../../data/raw/meta_motion_csv_files/"
 
 
 def read_data_from_files(files):
-    acc_df = pd.DataFrame()
-    gyr_df = pd.DataFrame()
+    acc_dfs = []
+    gyr_dfs = []
 
     acc_set = 1
     gyr_set = 1
@@ -107,12 +107,15 @@ def read_data_from_files(files):
         if "Gyroscope" in f:
             df["set"] = gyr_set
             gyr_set += 1
-            gyr_df = pd.concat([gyr_df, df])
+            gyr_dfs.append(df)
 
-        if "Accelerometer" in f:
+        elif "Accelerometer" in f:
             df["set"] = acc_set
             acc_set += 1
-            acc_df = pd.concat([acc_df, df])
+            acc_dfs.append(df)
+
+    acc_df = pd.concat(acc_dfs)
+    gyr_df = pd.concat(gyr_dfs)
 
     acc_df.index = pd.to_datetime(acc_df["epoch (ms)"], unit="ms")
     gyr_df.index = pd.to_datetime(gyr_df["epoch (ms)"], unit="ms")
