@@ -20,11 +20,53 @@ len(files)
 # --------------------------------------------------------------
 # Extract features from filename
 # --------------------------------------------------------------
+data_path = "../../data/raw/meta_motion_csv_files/"
 
+f = files[0]
+
+split_f = f.split("-")
+
+participant = split_f[0].replace(data_path, "")
+label = split_f[1]
+category = split_f[2].split("_")[0].rstrip("123")
+
+df = pd.read_csv(f)
+
+df["participant"] = participant
+df["label"] = label
+df["category"] = category
 
 # --------------------------------------------------------------
 # Read all files
 # --------------------------------------------------------------
+acc_df = pd.DataFrame()
+gyr_df = pd.DataFrame()
+
+
+acc_set = 1
+gyr_set = 1
+
+for f in files:
+    split_f = f.split("-")
+    participant = split_f[0].replace(data_path, "")
+    label = split_f[1]
+    category = split_f[2].split("_")[0].rstrip("123")
+
+    df = pd.read_csv(f)
+
+    df["participant"] = participant
+    df["label"] = label
+    df["category"] = category
+
+    if "Gyroscope" in f:
+        df["set"] = gyr_set
+        gyr_set += 1
+        gyr_df = pd.concat([gyr_df, df])
+
+    if "Accelerometer" in f:
+        df["set"] = acc_set
+        acc_set += 1
+        acc_df = pd.concat([acc_df, df])
 
 
 # --------------------------------------------------------------
