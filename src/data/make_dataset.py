@@ -73,7 +73,11 @@ for f in files:
 # Working with datetimes
 # --------------------------------------------------------------
 
+acc_df.index = pd.to_datetime(acc_df["epoch (ms)"], unit="ms")
+gyr_df.index = pd.to_datetime(gyr_df["epoch (ms)"], unit="ms")
 
+acc_df = acc_df.drop(columns=["epoch (ms)", "time (01:00)", "elapsed (s)"])
+gyr_df = gyr_df.drop(columns=["epoch (ms)", "time (01:00)", "elapsed (s)"])
 # --------------------------------------------------------------
 # Turn into function
 # --------------------------------------------------------------
