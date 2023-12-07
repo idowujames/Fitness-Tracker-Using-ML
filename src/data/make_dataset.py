@@ -169,6 +169,8 @@ data_resampled = pd.concat(
     [df.resample(rule="200ms").apply(sampling).dropna() for df in days]
 )
 
+data_resampled["set"] = data_resampled["set"].astype("int")
+
 # Accelerometer:    12.500HZ
 # Gyroscope:        25.000Hz
 
@@ -176,3 +178,5 @@ data_resampled = pd.concat(
 # --------------------------------------------------------------
 # Export dataset
 # --------------------------------------------------------------
+data_resampled.to_pickle("../../data/interim/01_data_processed.pkl")
+data_resampled.to_csv("../../data/interim/01_data_processed.csv")
