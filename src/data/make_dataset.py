@@ -150,6 +150,24 @@ data_merged.columns = [
 # --------------------------------------------------------------
 # Resample data (frequency conversion)
 # --------------------------------------------------------------
+sampling = {
+    "acc_y": "mean",
+    "acc_z": "mean",
+    "acc_x": "mean",
+    "gyr_x": "mean",
+    "gyr_y": "mean",
+    "gyr_z": "mean",
+    "participant": "last",
+    "label": "last",
+    "category": "last",
+    "set": "last",
+}
+
+days = [g for n, g in data_merged.groupby(pd.Grouper(freq="D"))]
+
+data_resampled = pd.concat(
+    [df.resample(rule="200ms").apply(sampling).dropna() for df in days]
+)
 
 # Accelerometer:    12.500HZ
 # Gyroscope:        25.000Hz
