@@ -75,3 +75,25 @@ fig, ax = plt.subplots()
 all_axis_df[['acc_y','acc_z','acc_x']].plot(ax=ax)
 ax.set(xlabel="Samples", ylabel="acc_y")
 plt.legend()
+
+# --------------------------------------------------------------
+# Creating a loop to plot all combinations per sensor
+# --------------------------------------------------------------
+labels = df['label'].unique()
+participants = df['participant'].unique()
+
+for label in labels:
+    for participant in participants:
+        all_axis_df = (
+            df.query(f"label=='{label}'")
+            .query(f"participant=='{participant}'")
+            .reset_index()
+        )
+         # Check if the resulting dataframe is empty
+        if not all_axis_df.empty:
+            # If it's not empty, create the plot
+            fig, ax = plt.subplots()
+            all_axis_df[['acc_y','acc_z','acc_x']].plot(ax=ax)
+            ax.set(xlabel="Samples", ylabel="acc_y",title=f"{label} ({participant})".title())
+            plt.legend()
+        
