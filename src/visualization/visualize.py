@@ -41,3 +41,13 @@ for label in df["label"].unique():
 mpl.style.use("seaborn-v0_8-deep")
 mpl.rcParams["figure.figsize"] = (20, 5)
 mpl.rcParams["figure.dpi"] = 100
+
+# --------------------------------------------------------------
+# Comparing Medium and Heavy Sets
+# --------------------------------------------------------------
+category_df = df.query("label== 'squat'").query('participant=="A"').reset_index()
+
+fig, ax = plt.subplots()
+category_df.groupby(["category"])["acc_y"].plot()
+ax.set(xlabel="Samples", ylabel="acc_y")
+plt.legend()
