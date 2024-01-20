@@ -51,3 +51,14 @@ fig, ax = plt.subplots()
 category_df.groupby(["category"])["acc_y"].plot()
 ax.set(xlabel="Samples", ylabel="acc_y")
 plt.legend()
+
+# --------------------------------------------------------------
+# Comparing Participants
+# --------------------------------------------------------------
+
+participant_df = df.query("label== 'bench'").sort_values('participant').reset_index()
+
+fig, ax = plt.subplots()
+participant_df.groupby(["participant"])["acc_y"].plot()
+ax.set(xlabel="Samples", ylabel="acc_y")
+plt.legend()
