@@ -94,6 +94,30 @@ for label in labels:
             # If it's not empty, create the plot
             fig, ax = plt.subplots()
             all_axis_df[['acc_y','acc_z','acc_x']].plot(ax=ax)
-            ax.set(xlabel="Samples", ylabel="acc_y",title=f"{label} ({participant})".title())
+            ax.set(
+                xlabel="Samples", 
+                ylabel="acc_y",
+                title=f"{label} ({participant})".title()
+                )
             plt.legend()
         
+# --------------------------------------------------------------
+# Combine plot in one figure
+# --------------------------------------------------------------
+
+label='row'
+participant = "A"
+combined_plot_df = (
+    df.query(f"label=='{label}'")
+    .query(f"participant=='{participant}'")
+    .reset_index(drop=True)
+    )
+
+fig, (ax1,ax2) = plt.subplots(nrows=2, sharex=True, figsize=(20,10))
+combined_plot_df[['acc_y','acc_z','acc_x']].plot(ax=ax1)
+combined_plot_df[['gyr_y','gyr_z','gyr_x']].plot(ax=ax2)
+
+ax1.legend(loc="upper center", bbox_to_anchor=(0.5,1.15),ncols=3, fancybox=True, shadow=True)
+ax2.legend(loc="upper center", bbox_to_anchor=(0.5,1.15),ncols=3, fancybox=True, shadow=True)
+ax1.set_xlabel("samples")
+ 
