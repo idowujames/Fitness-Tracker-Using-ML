@@ -119,5 +119,31 @@ combined_plot_df[['gyr_y','gyr_z','gyr_x']].plot(ax=ax2)
 
 ax1.legend(loc="upper center", bbox_to_anchor=(0.5,1.15),ncols=3, fancybox=True, shadow=True)
 ax2.legend(loc="upper center", bbox_to_anchor=(0.5,1.15),ncols=3, fancybox=True, shadow=True)
-ax1.set_xlabel("samples")
+ax2.set_xlabel("samples")
+
+# --------------------------------------------------------------
+# Looping over all combinations and exporting for both sensors
+# --------------------------------------------------------------
  
+labels = df['label'].unique()
+participants = df['participant'].unique()
+
+for label in labels:
+    for participant in participants:
+        combined_plot_df = (
+            df.query(f"label=='{label}'")
+            .query(f"participant=='{participant}'")
+            .reset_index()
+        )
+         # Check if the resulting dataframe is empty
+        if not combined_plot_df.empty:
+            fig, (ax1,ax2) = plt.subplots(nrows=2, sharex=True, figsize=(20,10))
+            combined_plot_df[['acc_y','acc_z','acc_x']].plot(ax=ax1)
+            combined_plot_df[['gyr_y','gyr_z','gyr_x']].plot(ax=ax2)
+            
+            ax2.set(xlabel="Samples")
+            
+            ax1.legend(loc="upper center", bbox_to_anchor=(0.5,1.15),ncols=3, fancybox=True, shadow=True)
+            ax2.legend(loc="upper center", bbox_to_anchor=(0.5,1.15),ncols=3, fancybox=True, shadow=True)
+            
+            plt.savefig(f"../../reports/figures/{label.title()} ({participant}).png")
